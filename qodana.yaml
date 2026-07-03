@@ -1,0 +1,16 @@
+version: "1.0"
+
+profile:
+  name: qodana.starter
+
+projectJDK: "21"
+
+exclude:
+  - name: All
+    paths:
+      - .gradle
+      - build
+      - out
+      - .ai
+
+linter: jetbrains/qodana-jvm-community:2026.1
