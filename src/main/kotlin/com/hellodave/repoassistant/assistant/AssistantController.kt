@@ -16,13 +16,16 @@ import java.nio.file.Path
 import kotlin.io.path.isDirectory
 
 class AssistantController(
-    private val geminiApiKey: String?,
+    private val modelConfig: AiModelConfig,
     private val assistant: RepoAssistant = RepoAssistant(),
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val _state = MutableStateFlow(
         UiState(
-            isApiKeyConfigured = !geminiApiKey.isNullOrBlank(),
+            isApiKeyConfigured = modelConfig.isConfigured,
+            providerName = modelConfig.providerName,
+            modelName = modelConfig.modelName,
+            apiKeyEnvironmentVariable = modelConfig.apiKeyEnvironmentVariable,
             messages = listOf(
                 ChatMessage(
                     role = ChatRole.Assistant,
@@ -42,9 +45,8 @@ class AssistantController(
         val trimmedQuestion = question.trim()
         if (trimmedQuestion.isEmpty() || _state.value.isLoading) return
 
-        val apiKey = geminiApiKey?.takeIf { it.isNotBlank() }
-        if (apiKey == null) {
-            showError("Set GEMINI_API_KEY before asking Gemini-backed repository questions.")
+        if (!modelConfig.isConfigured) {
+            showError("Set ${modelConfig.apiKeyEnvironmentVariable} before asking AI-backed repository questions.")
             return
         }
 
@@ -60,7 +62,7 @@ class AssistantController(
             val result = runCatching {
                 withContext(Dispatchers.IO) {
                     assistant.answer(
-                        apiKey = apiKey,
+                        config = modelConfig,
                         repositoryRoot = repositoryRoot,
                         question = trimmedQuestion,
                     )

@@ -45,7 +45,7 @@ fun ChatScreen(
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text("Repo Explorer Assistant", style = MaterialTheme.typography.h4)
-            Text("Ask Gemini-backed Koog tools about a local repository with bounded, read-only file access.")
+            Text("Ask AI-backed Koog tools about a local repository with bounded, read-only file access.")
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
@@ -56,7 +56,11 @@ fun ChatScreen(
                     singleLine = true,
                 )
                 Text(
-                    text = if (state.isApiKeyConfigured) "Gemini key configured" else "Missing GEMINI_API_KEY",
+                    text = if (state.isApiKeyConfigured) {
+                        "${state.providerName} configured: ${state.modelName}"
+                    } else {
+                        "Missing ${state.apiKeyEnvironmentVariable}"
+                    },
                     color = if (state.isApiKeyConfigured) Color(0xFF1B5E20) else Color(0xFFB71C1C),
                     modifier = Modifier.padding(top = 20.dp),
                 )
