@@ -20,6 +20,7 @@ If you find a security issue, do not include secrets or private repository conte
 Security-sensitive areas include:
 
 - Path traversal or symlink behavior that escapes the selected repository root.
+- Symlinks must resolve inside the selected repository root.
 - Tool output that reads ignored directories such as `.git`, `.gradle`, `build`, or dependency caches.
 - Excessive file reads, search results, or snippet output that bypass configured caps.
 - Accidental logging or persistence of API keys.

@@ -61,6 +61,7 @@ The UI does not construct agents or touch the file system directly.
 - The model cannot call arbitrary shell commands.
 - Repository tools are read-only.
 - All file access goes through `PathSandbox`.
+- Symlinks are resolved and rejected if their real path escapes the selected root.
 - Generated, VCS, dependency, and IDE directories are skipped.
 - Search matches, snippet lines, file bytes, listed files, and tree depth are capped.
 - Tests cover provider selection, controller behavior, path traversal rejection, ignored-directory rejection, snippet caps, and search caps.

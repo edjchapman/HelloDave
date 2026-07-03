@@ -61,6 +61,21 @@ class PathSandboxTest {
     }
 
     @Test
+    fun `rejects symbolic links that point outside repository root`() {
+        val root = Files.createTempDirectory("repo-sandbox")
+        val outside = Files.createTempFile("outside", ".txt")
+        outside.writeText("outside repository")
+        val linkedFile = root.resolve("linked.txt")
+        Files.createSymbolicLink(linkedFile, outside)
+        val sandbox = PathSandbox(root)
+
+        assertFailsWith<IllegalArgumentException> {
+            sandbox.resolve("linked.txt")
+        }
+        assertFalse(sandbox.isAllowed(linkedFile))
+    }
+
+    @Test
     fun `repo tools cap snippets and search results while skipping ignored directories`() {
         val root = Files.createTempDirectory("repo-tools")
         root.resolve("src").createDirectories()

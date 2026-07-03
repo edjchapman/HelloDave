@@ -140,6 +140,7 @@ Repo Explorer Assistant is designed for local repository inspection, not arbitra
 - Tools are read-only.
 - The selected repository root is normalized before use.
 - Absolute paths and `..` traversal are rejected if they escape the root.
+- Symlinks that resolve outside the selected root are rejected.
 - Generated, dependency, IDE, and VCS directories are skipped.
 - File reads, search results, snippet sizes, and project tree depth are capped.
 - Secrets must stay in environment variables and must not be written to the repository.
