@@ -9,11 +9,11 @@ Show that Repo Explorer Assistant can inspect a local repository with explicit, 
 ## Setup
 
 ```bash
-export GEMINI_API_KEY=your_key_here
+export AI_API_KEY=your_key_here
 ./gradlew run
 ```
 
-If you do not set `GEMINI_API_KEY`, the app still opens. Submit a question to show the friendly setup error, then restart with the key configured for the live demo.
+If you do not set `AI_API_KEY`, the app still opens. Submit a question to show the friendly setup error, then restart with the key configured for the live demo. The app currently defaults to Google Gemini, can switch to supported Koog clients with `AI_PROVIDER` and `AI_MODEL`, and still accepts `GEMINI_API_KEY` as a fallback for existing setups.
 
 ## Walkthrough
 

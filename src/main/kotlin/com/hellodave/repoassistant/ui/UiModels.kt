@@ -13,6 +13,9 @@ data class ChatMessage(
 data class UiState(
     val repositoryPath: String = "",
     val isApiKeyConfigured: Boolean = false,
+    val providerName: String = "AI provider",
+    val modelName: String = "AI model",
+    val apiKeyEnvironmentVariable: String = "AI_API_KEY",
     val messages: List<ChatMessage> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
