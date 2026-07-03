@@ -1,8 +1,9 @@
 # Repo Explorer Assistant
 
-[![CI](https://github.com/edjchapman/HelloDave/actions/workflows/ci.yml/badge.svg)](https://github.com/edjchapman/HelloDave/actions/workflows/ci.yml)
+[![CI](https://github.com/edjchapman/HelloDave/actions/workflows/check.yml/badge.svg)](https://github.com/edjchapman/HelloDave/actions/workflows/check.yml)
 [![Qodana](https://github.com/edjchapman/HelloDave/actions/workflows/qodana_code_quality.yml/badge.svg)](https://github.com/edjchapman/HelloDave/actions/workflows/qodana_code_quality.yml)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF?logo=kotlin)](https://kotlinlang.org/)
+[![Release](https://img.shields.io/github/v/release/edjchapman/HelloDave?sort=semver)](https://github.com/edjchapman/HelloDave/releases/latest)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.0-7F52FF?logo=kotlin)](https://kotlinlang.org/)
 [![JDK](https://img.shields.io/badge/JDK-21-007396?logo=openjdk)](https://openjdk.org/projects/jdk/21/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -31,6 +32,12 @@ AI_API_KEY=your_key_here ./gradlew run
 ```
 
 Then enter the absolute path to a local repository and ask a repository-specific question.
+
+## Download
+
+Prebuilt native installers are attached to each [GitHub Release](https://github.com/edjchapman/HelloDave/releases/latest): `.dmg` (macOS), `.msi` (Windows), and `.deb` (Debian/Ubuntu).
+
+> **Note:** installers are currently **unsigned**. macOS Gatekeeper may block first launch — right-click the app and choose **Open**. Windows SmartScreen may warn — choose **More info → Run anyway**. Or run from source with `./gradlew run`.
 
 ## Demo Flow
 
@@ -124,12 +131,12 @@ Install the repository hooks:
 ./scripts/install-hooks.sh
 ```
 
-The pre-commit hook runs `./gradlew test` before accepting a local commit.
+This points `core.hooksPath` at `.githooks/`; the pre-commit hook runs `make check` (markdown link/anchor checks plus `./gradlew build`) before accepting a local commit.
 
 ## Quality Gates
 
 - `./gradlew test` validates provider configuration, controller behavior, path sandboxing, snippet caps, and search caps.
-- GitHub Actions runs the Gradle test/build pipeline on pull requests and pushes to `main`.
+- GitHub Actions runs `make check` (the single quality gate, `.github/workflows/check.yml`) on pull requests and pushes to `main`.
 - Qodana is configured for JVM inspections through `.github/workflows/qodana_code_quality.yml` and `qodana.yaml`.
 - Dependabot monitors Gradle dependencies and GitHub Actions.
 
@@ -162,7 +169,7 @@ Recommended topics:
 - Add a screenshot or short demo GIF after the UI stabilizes.
 - Add optional agent tracing for easier portfolio walkthroughs.
 - Add richer repository summaries, such as dependency and test coverage views.
-- Publish signed desktop release artifacts when distribution becomes a priority.
+- Sign the automated desktop release artifacts (releases currently ship unsigned `.dmg`/`.msi`/`.deb` installers).
 
 ## License
 

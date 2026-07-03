@@ -45,3 +45,9 @@ Before opening a pull request:
 2. Update `README.md`, `docs/demo.md`, or the architecture/configuration docs if behavior changes.
 3. Describe user-facing impact and test coverage in the PR body.
 4. Avoid committing local IDE, cache, generated build, or secret files.
+
+Use a [Conventional Commits](https://www.conventionalcommits.org/) PR title (`feat:`, `fix:`, `docs:`, …). Because the repo squash-merges, the PR title becomes the commit subject that drives release versioning.
+
+## Releases
+
+Releases are automated by [release-please](https://github.com/googleapis/release-please). Merging PRs to `main` accumulates a pending "release PR" that bumps the version in `build.gradle.kts` and updates `CHANGELOG.md`. Merging that release PR tags `vX.Y.Z`, publishes a GitHub Release, and builds and attaches the native installers (`.dmg`/`.msi`/`.deb`). Installers are currently **unsigned**.

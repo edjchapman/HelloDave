@@ -70,9 +70,10 @@ Tests use `kotlin.test` on JUnit Platform. Prefer descriptive backtick test name
 Important checks:
 
 - Local: `./gradlew test`
-- Full local/CI check: `./gradlew build`
-- GitHub Actions CI: `.github/workflows/ci.yml`
+- Full local/CI check: `./gradlew build` (or `make check`, the single gate)
+- GitHub Actions CI: `.github/workflows/check.yml` (runs `make check` on push/PR to `main`)
 - Qodana JVM analysis: `.github/workflows/qodana_code_quality.yml` and `qodana.yaml`
+- Releases: `release-please` (`.github/workflows/release-please.yml`) bumps the version + `CHANGELOG.md` and, on merge of its release PR, tags `vX.Y.Z` and attaches the Dmg/Msi/Deb installers.
 
 ## Contribution Notes
 

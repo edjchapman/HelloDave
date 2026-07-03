@@ -1,0 +1,91 @@
+name: release-please
+
+# Automated releases from Conventional-Commit PR titles (squash-merged to main).
+# Job 1 opens/updates a release PR that bumps build.gradle.kts + CHANGELOG.md;
+# merging that PR tags vX.Y.Z and cuts a GitHub Release. Job 2 then builds the
+# native installers per-OS and attaches them. Job 2 is gated on job 1's
+# release_created output via `needs`, which sidesteps the GitHub rule that a
+# GITHUB_TOKEN-created release cannot trigger a separate workflow (no PAT needed).
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: release-please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
+      version: ${{ steps.rp.outputs.version }}
+    steps:
+      - id: rp
+        uses: googleapis/release-please-action@v5.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  build-installers:
+    name: package (${{ matrix.format }})
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            format: dmg
+            glob: build/compose/binaries/main/dmg/*.dmg
+          - os: windows-latest
+            format: msi
+            glob: build/compose/binaries/main/msi/*.msi
+          - os: ubuntu-latest
+            format: deb
+            glob: build/compose/binaries/main/deb/*.deb
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the released tag
+        uses: actions/checkout@v7.0.0
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5.4.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6.2.0
+        with:
+          cache-provider: basic
+
+      - name: Install WiX (Windows MSI)
+        if: matrix.os == 'windows-latest'
+        run: choco install wixtoolset --no-progress -y
+
+      - name: Package installer for current OS
+        run: ./gradlew packageDistributionForCurrentOS
+
+      - name: Upload installer to the GitHub Release
+        uses: softprops/action-gh-release@v3.0.1
+        with:
+          tag_name: ${{ needs.release-please.outputs.tag_name }}
+          files: ${{ matrix.glob }}
+          fail_on_unmatched_files: true

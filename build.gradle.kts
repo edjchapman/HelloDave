@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.hellodave"
-version = "1.0.0"
+version = "1.0.0" // x-release-please-version
 
 kotlin {
     jvmToolchain(21)
@@ -33,7 +33,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "RepoExplorerAssistant"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.0" // x-release-please-version
         }
     }
 }
