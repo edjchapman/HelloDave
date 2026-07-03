@@ -8,6 +8,8 @@ out/
 *.iml
 
 .idea/workspace.xml
+.idea/modules.xml
+.idea/modules/
 .idea/tasks.xml
 .idea/shelf/
 
