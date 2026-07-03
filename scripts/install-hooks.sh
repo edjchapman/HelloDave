@@ -3,6 +3,6 @@ set -eu
 
 repo_root=$(git rev-parse --show-toplevel)
 
-git -C "$repo_root" config core.hooksPath scripts/git-hooks
+git -C "$repo_root" config core.hooksPath .githooks
 
-printf 'Git hooks installed from scripts/git-hooks\n'
+printf 'Git hooks installed from .githooks (pre-commit runs "make check")\n'
