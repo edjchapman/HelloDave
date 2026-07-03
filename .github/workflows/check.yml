@@ -1,0 +1,43 @@
+name: check
+
+# The repository's single quality gate. `make check` runs markdown link/anchor
+# validation plus the Gradle build & test (via the Makefile's stack-check target).
+# The local pre-commit hook (.githooks/pre-commit) and scheduled-check.yml invoke
+# the exact same command, so local and CI verdicts always agree — there is no
+# separate "build" workflow to keep in sync.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: make check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5.4.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6.2.0
+        with:
+          cache-provider: basic
+
+      - name: Run make check
+        run: make check

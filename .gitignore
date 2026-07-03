@@ -8,8 +8,19 @@ out/
 *.iml
 
 .idea/workspace.xml
+.idea/modules.xml
+.idea/modules/
 .idea/tasks.xml
 .idea/shelf/
 
 .DS_Store
 .ai/
+
+# Claude Code — personal/local bits only.
+# Keep .claude/settings.json + .claude/hooks/ tracked (Claude-on-web bootstrap).
+/.claude/agents
+/.claude/commands
+/.claude/skills
+/.claude/rules
+/.claude/settings.local.json
+/.mcp.json

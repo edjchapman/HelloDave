@@ -1,0 +1,16 @@
+name: scheduled-check
+
+# Re-runs the same `make check` gate on a schedule to catch drift from
+# out-of-band edits (e.g. changes made through the GitHub web UI that never ran
+# the pre-commit hook or a PR check). Delegates to check.yml so the gate is
+# defined in exactly one place.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: make check (scheduled)
+    uses: ./.github/workflows/check.yml
