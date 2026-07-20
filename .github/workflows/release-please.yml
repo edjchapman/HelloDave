@@ -84,7 +84,7 @@ jobs:
         run: ./gradlew packageDistributionForCurrentOS
 
       - name: Upload installer to the GitHub Release
-        uses: softprops/action-gh-release@v3.0.1
+        uses: softprops/action-gh-release@v3.0.2
         with:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
           files: ${{ matrix.glob }}
