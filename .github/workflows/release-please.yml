@@ -61,7 +61,7 @@ jobs:
         shell: bash
     steps:
       - name: Check out the released tag
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ needs.release-please.outputs.tag_name }}
 
