@@ -17,8 +17,8 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.11.0")
-    implementation("ai.koog:koog-agents:1.0.0")
-    implementation("ai.koog:koog-agents-additions:1.0.0-beta")
+    implementation("ai.koog:koog-agents:1.1.1")
+    implementation("ai.koog:koog-agents-additions:1.1.1-beta")
 
     testImplementation(kotlin("test"))
 }
